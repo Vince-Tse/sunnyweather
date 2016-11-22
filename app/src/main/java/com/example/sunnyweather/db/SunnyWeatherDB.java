@@ -1,11 +1,13 @@
-package com.example.sunnyweather.model;
+package com.example.sunnyweather.db;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.sunnyweather.db.SunnyWeatherOpenHelper;
+import com.example.sunnyweather.model.City;
+import com.example.sunnyweather.model.County;
+import com.example.sunnyweather.model.Province;
 
 import java.util.ArrayList;
 import java.util.List;
