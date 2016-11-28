@@ -2,8 +2,10 @@ package com.example.sunnyweather.activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -67,6 +69,13 @@ public class ChooseAreaActivity extends Activity{
 
     protected void onCreated(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        if (prefs.getBoolean("selected_city",false)){
+            Intent intent = new Intent(this,WeatherActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.choose_area);
         titleText = (TextView)findViewById(R.id.text_title);
@@ -83,6 +92,12 @@ public class ChooseAreaActivity extends Activity{
                 }else if(currentLevel == LEVEL_CITY){
                     selectedCity = cityList.get(index);
                     queryCounties();
+                }else if (currentLevel == LEVEL_COUNTY){
+                    String countyCode = countyList.get(index).getCountyCode();
+                    Intent intent = new Intent(ChooseAreaActivity.this,WeatherActivity.class);
+                    intent.putExtra("county_code",countyCode);
+                    startActivity(intent);
+                    finish();
                 }
             }
         });
@@ -151,11 +166,12 @@ public class ChooseAreaActivity extends Activity{
      */
     private void queryFromServer(final String code,final String type){
         String address;
-        if (!TextUtils.isEmpty(code)){
-            address = "http://mobile.weather.com.cn/js/citylist"+code+".xml";
-        }else{
-            address = "http://mobile.weather.com.cn/js/citylist.xml";
-        }
+        address = "https://api.heweather.com/x3/citylist?search=allchina&key=450f08bc221248e4910cee32275616f2";
+//        if (!TextUtils.isEmpty(code)){
+//            address = "http://mobile.weather.com.cn/js/citylist"+code+".xml";
+//        }else{
+//            address = "http://mobile.weather.com.cn/js/citylist.xml";
+//        }
         showProgressDialog();
         HttpUtil.sendHttpRequest(address, new HttpCallbackListener() {
             @Override
