@@ -18,6 +18,8 @@
         </activity>
         <activity android:name="com.example.sunnyweather.activity.WeatherActivity">
         </activity>
+        <service android:name="com.example.sunnyweather.service.AutoUpdateService"></service>
+        <receiver android:name="com.example.sunnyweather.receiver.AutoUpdateReceiver"></receiver>
     </application>
 
 </manifest>
